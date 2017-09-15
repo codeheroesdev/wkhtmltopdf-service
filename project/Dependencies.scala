@@ -30,10 +30,17 @@ object Dependencies {
     "io.github.cloudify" %% "spdf" % spdfVersion
   )
 
+  val testDependencies = Seq(
+    "org.scalactic" %% "scalactic" % scalaTestVersion % "test",
+    "org.scalatest" %% "scalatest" % scalaTestVersion % "test",
+    "com.typesafe.akka" %% "akka-http-testkit" % akkaHttpVersion % "test"
+  )
+
   val projectDependencies = Seq(
     loggingDependencies,
     akkaHttpDependencies,
-    spdfDependencies
+    spdfDependencies,
+    testDependencies
   ).reduce(_ ++ _)
 
   val additionalResolvers = Seq(

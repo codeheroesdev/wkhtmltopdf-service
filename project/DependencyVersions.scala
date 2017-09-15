@@ -7,4 +7,5 @@ object DependencyVersions {
   val akkaJson4sVersion = "1.17.0"
   val corsVersion = "0.2.1"
   val spdfVersion = "1.4.0"
+  val scalaTestVersion = "3.0.3"
 }

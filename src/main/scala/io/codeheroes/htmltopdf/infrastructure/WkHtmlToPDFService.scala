@@ -1,15 +1,19 @@
 package io.codeheroes.htmltopdf.infrastructure
 
-import java.io.{ByteArrayOutputStream, File, OutputStream}
+import java.io.File
+import java.util.UUID
 
 import io.codeheroes.htmltopdf.domain.{Margin, PDFService}
 import io.github.cloudify.scala.spdf.{PageOrientation, Pdf, PdfConfig}
 
 import scala.concurrent.{ExecutionContext, Future}
+import scala.xml.XML
 
-class WkHtmlToPdfService(implicit ec: ExecutionContext) extends PDFService {
+class WkHtmlToPDFService(wkHtmlToPdfPath: String)
+                        (implicit ec: ExecutionContext) extends PDFService {
+
   override def generatePdf(page: String, pageOrientation: PageOrientation, size: String, margin: Margin): Future[File] = {
-    val pdf = Pdf(new PdfConfig {
+    val pdf = Pdf(wkHtmlToPdfPath, new PdfConfig {
       orientation := pageOrientation
       pageSize := size
       marginTop := margin.top
@@ -17,9 +21,12 @@ class WkHtmlToPdfService(implicit ec: ExecutionContext) extends PDFService {
       marginLeft := margin.left
       marginRight := margin.right
     })
-    val outputStream = new File("pdf.pdf")
+    val outputStream = new File(getFileName)
     Future {
-      pdf.run(page, outputStream)
+      pdf.run(XML.loadString(page), outputStream)
     }.map(_ => outputStream)
   }
+
+  private def getFileName = UUID.randomUUID().toString
+
 }
