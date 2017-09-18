@@ -7,22 +7,21 @@ import com.typesafe.config.Config
 import com.typesafe.scalalogging.StrictLogging
 import io.codeheroes.htmltopdf.api.PdfRoutes
 import io.codeheroes.htmltopdf.api.core.EndpointsWrapper
-import io.codeheroes.htmltopdf.infrastructure.WkHtmlToPDFService
+import io.codeheroes.htmltopdf.domain.PDFService
 
 import scala.util.{Failure, Success}
 
 final case class APIConfig(bindHost: String, bindPort: Int)
 
-class Application(config: Config, apiConfig: APIConfig) extends StrictLogging {
+class Application(config: Config, apiConfig: APIConfig, pdfService: PDFService) extends StrictLogging {
 
   private implicit val system = ActorSystem("ActorSystem", config)
   private implicit val dispatcher = system.dispatcher
   private implicit val materializer = ActorMaterializer()
   private implicit val scheduler = system.scheduler
 
-  private val pdfService = new WkHtmlToPDFService(config.getString("wkhtmltopdf.path"))
   private val pdfRoutes = new PdfRoutes(pdfService)
-  private val routing = new EndpointsWrapper(pdfRoutes.routes).routing
+  val routing = new EndpointsWrapper(pdfRoutes.routes).routing
 
   def start(): Unit = {
     Http().bindAndHandle(routing, apiConfig.bindHost, apiConfig.bindPort).onComplete {

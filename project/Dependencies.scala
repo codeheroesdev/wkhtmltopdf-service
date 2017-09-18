@@ -21,8 +21,8 @@ object Dependencies {
     "com.typesafe.akka" %% "akka-http" % akkaHttpVersion,
     "com.typesafe.akka" %% "akka-http-core" % akkaHttpVersion,
     "de.heikoseeberger" %% "akka-http-json4s" % akkaJson4sVersion,
-    "ch.megard" %% "akka-http-cors" % corsVersion,
     "org.json4s" %% "json4s-native" % json4sVersion,
+    "com.typesafe.akka" %% "akka-slf4j" % akkaVersion,
     "org.json4s" %% "json4s-core" % json4sVersion
   )
 

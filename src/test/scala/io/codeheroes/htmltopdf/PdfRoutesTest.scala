@@ -6,6 +6,7 @@ import akka.http.scaladsl.testkit.{RouteTestTimeout, ScalatestRouteTest}
 import akka.stream.ActorMaterializer
 import akka.stream.scaladsl.{Framing, Sink}
 import akka.util.ByteString
+import com.typesafe.config.ConfigFactory
 import de.heikoseeberger.akkahttpjson4s.Json4sSupport
 import io.codeheroes.htmltopdf.api.PdfRoutes
 import io.codeheroes.htmltopdf.mock.PdfServiceMock
@@ -28,8 +29,8 @@ class PdfRoutesTest extends FlatSpec with Matchers with ScalatestRouteTest with 
   override protected def beforeAll(): Unit = {
     val testFilePath = classOf[PdfRoutesTest].getClassLoader.getResource("test.txt").getPath
     val pdfService = new PdfServiceMock(testFilePath)
-    val pdfRouting = new PdfRoutes(pdfService)
-    endpoint = pdfRouting.routes
+    val application = new Application(ConfigFactory.load("test.conf"), APIConfig("localhost", 8080), pdfService)
+    endpoint = application.routing
   }
 
   "POST /generate" should "return status OK" in {

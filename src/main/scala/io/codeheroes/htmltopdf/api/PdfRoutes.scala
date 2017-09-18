@@ -18,7 +18,7 @@ class PdfRoutes(pdfService: PDFService)(implicit ec: ExecutionContext) extends J
   val routes = (path("generate") & post & entity(as[GeneratePDFRequest])) { request =>
     onSuccess(pdfService.generatePdf(request.content, request.orientation, request.pageSize, request.margin)) { file =>
       val byteStringSource = FileIO.fromPath(file.toPath).watchTermination() {
-        case (res, _) => res.onComplete {
+        case (_, res) => res.onComplete {
           case _ => file.delete()
         }
       }
