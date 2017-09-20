@@ -1,15 +1,14 @@
 package io.codeheroes.htmltopdf
 
-trait Env {
-  def toApplication: Application
-}
+import com.typesafe.config.ConfigFactory
+import io.codeheroes.htmltopdf.infrastructure.WkHtmlToPDFService
 
 object Main extends App {
-  val environment = args.headOption match {
-    case None => new DefaultEnv
-    case Some("production") => new ProductionEnv
-    case other => throw new UnsupportedOperationException(s"Cannot start application for config: $other.")
-  }
+  private val config = ConfigFactory.load("default.conf")
+  private val apiConfig = APIConfig(config.getString("application.api.bind-host"), config.getInt("application.api.bind-port"))
 
-  environment.toApplication.start()
+  private val app = new Application(config, apiConfig, new WkHtmlToPDFService(config.getString("wkhtmltopdf.path")))
+
+  app.start()
+
 }

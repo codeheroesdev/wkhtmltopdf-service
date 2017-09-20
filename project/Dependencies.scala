@@ -18,12 +18,14 @@ object Dependencies {
   )
 
   val akkaHttpDependencies = Seq(
+    "com.typesafe.akka" %% "akka-actor" % akkaVersion,
+    "com.typesafe.akka" %% "akka-stream" % akkaVersion,
+    "com.typesafe.akka" %% "akka-slf4j" % akkaVersion,
     "com.typesafe.akka" %% "akka-http" % akkaHttpVersion,
     "com.typesafe.akka" %% "akka-http-core" % akkaHttpVersion,
-    "de.heikoseeberger" %% "akka-http-json4s" % akkaJson4sVersion,
     "org.json4s" %% "json4s-native" % json4sVersion,
-    "com.typesafe.akka" %% "akka-slf4j" % akkaVersion,
-    "org.json4s" %% "json4s-core" % json4sVersion
+    "org.json4s" %% "json4s-core" % json4sVersion,
+    "de.heikoseeberger" %% "akka-http-json4s" % akkaJson4sVersion
   )
 
   val spdfDependencies = Seq(
