@@ -1,6 +1,10 @@
 # wkhtmltopdf-service
-Simple stateless service exposing REST API for generating PDF using wkhtmltopdf. There is configured docker in build.sbt file
-containing installed Java 8 and wkhtmltopdf.
+Simple stateless service exposing REST API for generating PDF using wkhtmltopdf.
+
+You can use our Docker image:
+```
+docker run -p 8080:8080 codeheroes/wkhtmltopdf-service:1.0
+```
 
 Sample request:
 ```
